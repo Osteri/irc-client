@@ -7,7 +7,7 @@
 
 using namespace boost::asio;
 
-Connection::Connection(const std::string name, const uint16_t port)
+Connection::Connection(const std::string& name, const uint16_t port)
   : socket(context) {
   ip::tcp::resolver resolver(context);
   ip::tcp::resolver::query query(name, std::to_string(port));

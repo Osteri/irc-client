@@ -8,6 +8,7 @@ class Config
 {
 public:
   Config(int ac, char **av);
+  friend std::ostream& operator<<(std::ostream& os, const Config& conf);
 
   std::string server;
   uint16_t port;

@@ -47,8 +47,7 @@ int main(int ac, char** av)
   try {
     con << "nick " << conf.nick << "\r\n";
     con << "user " << conf.nick << " 8 * :Real Name" << "\r\n";
-    for(const auto& c : conf.channels)
-      con << "join " << c << "\r\n";
+    for(const auto& c : conf.channels) con << "join " << c << "\r\n";
   } catch (const boost::system::system_error& ex) {
     std::cerr << ex.what() << '\n';
   }

@@ -10,7 +10,7 @@ using namespace boost::asio;
 class Connection
 {
 public:
-  Connection(const std::string name, const uint16_t port);
+  Connection(const std::string& name, const uint16_t port);
   ~Connection();
   Connection& operator<<(const std::string& buf);
   Connection* operator>>(std::string& buf);
