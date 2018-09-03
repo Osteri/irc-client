@@ -7,10 +7,10 @@
 
 using namespace boost::asio;
 
-Connection::Connection(const std::string& name, const uint16_t port)
+Connection::Connection(const std::string& host, const std::string& port)
   : socket(context) {
   ip::tcp::resolver resolver(context);
-  ip::tcp::resolver::query query(name, std::to_string(port));
+  ip::tcp::resolver::query query(host, port);
 
   /* Iterate all tcp/ip endpoints. */
   auto iter = resolver.resolve(query);
@@ -24,7 +24,7 @@ Connection::Connection(const std::string& name, const uint16_t port)
     context.run();
     return;
   }
-  std::cerr << "ERROR: " << ec.message() << "\n";
+  std::cerr << "ERROR: " << ec.message() << '\n';
   exit(1);
 }
 

@@ -7,7 +7,10 @@
 
 int main(int ac, char** av)
 {
-  Config conf(ac, av);
+  //Config conf(ac, av);
+  Config conf("lol.txt");
+  std::cout << "Configuration: " << conf << '\n';
+  exit(1);
   Connection con(conf.server, conf.port);
   std::atomic<bool> run(true);  // monitor 'send thread'
                                 // and exit based on it
