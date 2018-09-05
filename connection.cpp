@@ -9,23 +9,30 @@ using namespace boost::asio;
 
 Connection::Connection(const std::string& host, const std::string& port)
   : socket(context) {
+  boost::system::error_code ec;
+
   ip::tcp::resolver resolver(context);
   ip::tcp::resolver::query query(host, port);
 
-  /* Iterate all tcp/ip endpoints. */
-  auto iter = resolver.resolve(query);
-  ip::tcp::endpoint ep = *iter;
-  std::cout << "Connecting... " << ep << " ";
-
-  boost::system::error_code ec;
-  socket.connect(ep, ec);
+  /* Possibly iterate all tcp/ip endpoints. */
+  auto iter = resolver.resolve(query, ec);
+  if (!ec) {
+    ip::tcp::endpoint ep = *iter;
+    socket.connect(ep, ec);
+  }
+  else {
+    std::cerr << "ERROR: " << ec.message() << '\n';
+    exit(1);
+  }
   if (!ec) {
     std::cout << " - OK!\n";
     context.run();
     return;
   }
-  std::cerr << "ERROR: " << ec.message() << '\n';
-  exit(1);
+  else {
+    std::cerr << "ERROR: " << ec.message() << '\n';
+    exit(1);
+  }
 }
 
 Connection::~Connection() { socket.close(); }
