@@ -4,28 +4,27 @@
 #include <iostream>
 #include <vector>
 
-#include <boost/program_options.hpp>
-
-namespace po = boost::program_options;
+#include <boost/program_options/variables_map.hpp>
 
 class Config
 {
 public:
-  Config(int ac, char **av);              // parse cli options
-  Config(const std::string& filename);    // parse config file
-  void Save(const std::string& filename); // save config file from existing state
+  Config() = delete;                    // def ctor
+  Config(int ac, char** av);            // parse options from cli
+  Config(const std::string& filename);  // parse options from config file
 
-  friend std::ostream& operator<<(std::ostream& os, const Config& conf);
+  void Save(const std::string& filename); // save existing state to config file
 
-  std::string server;
-  std::string port;
-  std::string nick;
+  friend std::ostream& operator<<(std::ostream& os, const Config& conf); // print
+  friend std::ostream& operator<<(std::fstream& os, const Config& conf); // save file
+
+  /* Actual information this class holds. */
+  std::string server, port, nick;
   std::vector<std::string> channels;
 
 private:
-  auto CreateOptionsDesc(const std::string& name);
-  void AssignValues(const po::variables_map& vm,
-                       std::shared_ptr<po::options_description> desc);
+  auto CreateOptionsDesc(const std::string& name); // reduce boiler plate code
+  void AssignValues(const boost::program_options::variables_map& vm);
 };
 
 #endif // CONFIG_H

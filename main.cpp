@@ -7,13 +7,14 @@
 
 int main(int ac, char** av)
 {
-  Config conf(ac, av);
-//  Config conf("saved.txt");
-  conf.Save("saved.txt");
-//  conf.Load("saved.txt");
+  /* If no parameters (or only "--help") given, try loading config from file. */
+  Config conf = (ac >= 2) ? Config{ac, av} :
+                            Config{"saved-session.txt"};
+  conf.Save("saved-session.txt");
   std::cout << "Configuration: " << '\n' << conf;
-  exit(1);
+//  exit(1);
   Connection con(conf.server, conf.port);
+
   std::atomic<bool> run(true);  // monitor 'send thread'
                                 // and exit based on it
 
@@ -44,7 +45,7 @@ int main(int ac, char** av)
       }
       std::cout << buf;
       buf.clear(); // possibly remove
-      std::this_thread::sleep_for(std::chrono::milliseconds(300));
+      std::this_thread::sleep_for(std::chrono::milliseconds(500));
     }
   });
 
