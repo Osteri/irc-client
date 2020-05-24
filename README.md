@@ -31,5 +31,7 @@ Example usage:
 ### Install
 
     mkdir build && cd build
-    cmake ..
+    cmake ..     
+    # or cmake .. -DSANITIZER="address"
+    # or cmake .. -DSANITIZER="thread"
     make install -j 12
